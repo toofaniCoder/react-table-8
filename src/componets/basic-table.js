@@ -9,57 +9,67 @@ import STUDENTS from "../students.json";
 const table = createTable();
 const defaultData = [...STUDENTS];
 const defaultColumns = [
-  table.createDataColumn("name", {
-    id: "name",
+  table.createGroup({
     header: "Full Name",
-    cell: (props) => props.getValue().toUpperCase(),
-  }),
-  table.createDataColumn("email", {
-    id: "email",
-    header: "E-mail Address",
-  }),
-  table.createDataColumn("phone", {
-    id: "phone",
-    header: "Phone Number",
-  }),
-  table.createDataColumn("standard", {
-    id: "standard",
-    header: "Class",
-  }),
-  table.createDataColumn("section", {
-    id: "section",
-    header: "Section",
+    columns: [
+      table.createDataColumn("firstName", {
+        id: "First Name",
+      }),
+      table.createDataColumn("middleName", {
+        id: "Middle Name",
+      }),
+      table.createDataColumn("lastName", {
+        id: "Last Name",
+      }),
+    ],
   }),
   table.createDataColumn("age", {
-    id: "age",
-    header: "Age",
+    id: "Age",
   }),
-  table.createDataColumn("date_of_birth", {
-    id: "date_of_birth",
-    header: "Date of Birth",
-    cell: (props) => new Date(props.getValue()).toDateString(),
+  table.createGroup({
+    header: "Phone Number",
+    columns: [
+      table.createDataColumn((row) => row.phone[1], {
+        id: "Phone Number 1",
+      }),
+      table.createDataColumn((row) => row.phone[2], {
+        id: "Phone Number 2",
+      }),
+    ],
   }),
-  table.createDataColumn("date_of_admission", {
-    id: "date_of_admission",
-    header: "Date of Admission",
-    cell: (props) => new Date(props.getValue()).toDateString(),
+  table.createDataColumn("email", {
+    id: "E-mail Address",
   }),
-  table.createDataColumn((row) => row.address.pincode, {
-    id: "pincode",
-    header: "Pin Code",
+  table.createGroup({
+    header: "Full Address",
+    columns: [
+      table.createDataColumn((row) => row.address.street, {
+        id: "Street",
+      }),
+      table.createDataColumn((row) => row.address.city, {
+        id: "City",
+      }),
+      table.createDataColumn((row) => row.address.state, {
+        id: "Address",
+      }),
+      table.createDataColumn((row) => row.address.pincode, {
+        id: "Pin Code",
+      }),
+    ],
   }),
-  table.createDataColumn(
-    (row) => `${row.address.street}, ${row.address.city}, ${row.address.state}`,
-    {
-      id: "address",
-      header: "Full Address",
-      cell: (props) => (
-        <span>
-          {props.getValue()} - <b>{props.row.original.address.pincode}</b>
-        </span>
-      ),
-    }
-  ),
+  table.createGroup({
+    header: "Date Details",
+    columns: [
+      table.createDataColumn("date_of_birth", {
+        id: "Date of Birth",
+        cell: (props) => new Date(props.getValue()).toDateString(),
+      }),
+      table.createDataColumn("date_of_admission", {
+        id: "Date of Admission",
+        cell: (props) => new Date(props.getValue()).toDateString(),
+      }),
+    ],
+  }),
 ];
 const BasicTable = () => {
   const [data, setData] = useState([...defaultData]);
@@ -78,7 +88,7 @@ const BasicTable = () => {
           {instance.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th key={header.id}>
+                <th key={header.id} colSpan={header.colSpan}>
                   {header.isPlaceholder ? null : header.renderHeader()}
                 </th>
               ))}
@@ -98,7 +108,7 @@ const BasicTable = () => {
           {instance.getFooterGroups().map((footerGroup) => (
             <tr key={footerGroup.id}>
               {footerGroup.headers.map((header) => (
-                <th key={header.id}>
+                <th key={header.id} colSpan={header.colSpan}>
                   {header.isPlaceholder ? null : header.renderFooter()}
                 </th>
               ))}
