@@ -3,6 +3,7 @@ import {
   createTable,
   useTableInstance,
   getCoreRowModel,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 import STUDENTS from "../students.json";
 
@@ -72,15 +73,24 @@ const defaultColumns = [
   }),
 ];
 const BasicTable = () => {
-  const [data, setData] = useState([...defaultData]);
-  const [columns, setColumns] = useState([...defaultColumns]);
+  const [data] = useState([...defaultData]);
+  const [columns] = useState([...defaultColumns]);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   const instance = useTableInstance(table, {
     data,
     columns,
+    state: {
+      pagination: pagination,
+    },
+    onPaginationChange: setPagination,
+    getPaginationRowModel: getPaginationRowModel(),
     getCoreRowModel: getCoreRowModel(),
   });
-  console.log(instance.getRowModel());
+
   return (
     <div>
       <table border={1}>
@@ -116,6 +126,62 @@ const BasicTable = () => {
           ))}
         </tfoot>
       </table>
+      <div className="pagination">
+        <button
+          onClick={() => instance.setPageIndex(0)}
+          disabled={!instance.getCanPreviousPage()}
+        >
+          &lt;&lt;
+        </button>
+        <button
+          onClick={instance.previousPage}
+          disabled={!instance.getCanPreviousPage()}
+        >
+          &lt;
+        </button>
+        <button
+          onClick={instance.nextPage}
+          disabled={!instance.getCanNextPage()}
+        >
+          &gt;
+        </button>
+
+        <button
+          onClick={() => instance.setPageIndex(instance.getPageCount() - 1)}
+          disabled={!instance.getCanNextPage()}
+        >
+          &gt;&gt;
+        </button>
+        <span>
+          page {instance.getState().pagination.pageIndex + 1} of{" "}
+          {instance.getPageCount()}
+          {"| "}
+        </span>
+        <span>
+          go to page{" "}
+          <input
+            type="number"
+            defaultValue={instance.getState().pagination.pageIndex + 1}
+            onChange={(e) => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+              instance.setPageIndex(page);
+            }}
+          />
+          {" | "}
+        </span>
+        <span>
+          <select
+            value={instance.getState().pagination.pageSize}
+            onChange={(e) => instance.setPageSize(Number(e.target.value))}
+          >
+            {[10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                show {pageSize}
+              </option>
+            ))}
+          </select>
+        </span>
+      </div>
     </div>
   );
 };
