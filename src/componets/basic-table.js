@@ -5,7 +5,7 @@ import {
   getCoreRowModel,
 } from "@tanstack/react-table";
 import STUDENTS from "../students.json";
-
+import download from "downloadjs";
 const table = createTable();
 const defaultData = [...STUDENTS];
 const defaultColumns = [
@@ -70,7 +70,24 @@ const defaultColumns = [
       }),
     ],
   }),
+  table.createDisplayColumn({
+    id: "action",
+    cell: (props) => <DownloadDetials row={props.row} />,
+  }),
 ];
+
+const DownloadDetials = ({ row }) => {
+  const data = row.getAllCells().map((cell) => cell.getValue());
+
+  const onClickHandler = () => {
+    download(
+      data.join("\n"),
+      `${data[0]}_${data[1]}_${data[2]}.txt`,
+      "text/plain"
+    );
+  };
+  return <button onClick={onClickHandler}>download details</button>;
+};
 const BasicTable = () => {
   const [data, setData] = useState([...defaultData]);
   const [columns, setColumns] = useState([...defaultColumns]);
