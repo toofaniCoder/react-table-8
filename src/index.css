@@ -2,11 +2,75 @@ body {
   font-family: "Poppins";
 }
 table {
-  text-align: center;
   border-collapse: collapse;
+  text-align: left;
+  width: 100%;
+  border: 0px;
 }
 
 th,
 td {
-  padding: 10px 5px;
+  padding: 10px 15px;
+}
+
+thead {
+  font-weight: 700;
+}
+
+tbody {
+  font-weight: 300;
+}
+
+tbody tr td,
+thead tr th,
+tfoot tr th {
+  border: none;
+}
+tbody td,
+thead th,
+tfoot th {
+  color: #fff;
+}
+thead th:nth-child(1),
+tfoot th:nth-child(1) {
+  background-color: hsl(169, 0%, 10%);
+}
+tbody td:nth-child(1) {
+  background-color: hsl(169, 0%, 20%);
+}
+thead th:nth-child(2),
+tfoot th:nth-child(2) {
+  background-color: hsl(169, 100%, 36%);
+}
+tbody td:nth-child(2) {
+  background-color: hsl(169, 100%, 46%);
+}
+
+thead th:nth-child(3),
+tfoot th:nth-child(3) {
+  background-color: hsl(212, 100%, 40%);
+}
+tbody td:nth-child(3) {
+  background-color: hsl(212, 100%, 50%);
+}
+thead th:nth-child(4),
+tfoot th:nth-child(4) {
+  background-color: hsl(45, 100%, 59%);
+}
+tbody td:nth-child(4) {
+  background-color: hsl(45, 100%, 69%);
+}
+thead th:nth-child(5),
+tfoot th:nth-child(5) {
+  background-color: hsl(28, 100%, 47%);
+}
+tbody td:nth-child(5) {
+  background-color: hsl(28, 100%, 57%);
+}
+thead th:nth-child(6),
+tfoot th:nth-child(6) {
+  background-color: hsl(353, 100%, 53%);
+}
+tbody td:nth-child(6) {
+  background-color: hsl(353, 100%, 63%);
 }

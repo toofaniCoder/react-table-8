@@ -5,85 +5,53 @@ import {
   getCoreRowModel,
 } from "@tanstack/react-table";
 import STUDENTS from "../students.json";
-
 const table = createTable();
+
+// DEFAULT DATA
 const defaultData = [...STUDENTS];
+
+// DEFINE COLUMNS
 const defaultColumns = [
-  table.createGroup({
-    header: "Full Name",
-    columns: [
-      table.createDataColumn("firstName", {
-        id: "First Name",
-      }),
-      table.createDataColumn("middleName", {
-        id: "Middle Name",
-      }),
-      table.createDataColumn("lastName", {
-        id: "Last Name",
-      }),
-    ],
+  table.createDataColumn("subject", { id: "subjects", footer: "Subjects" }),
+  table.createDataColumn("semester_1", {
+    id: "semester_1",
+    header: "Semester 1",
+    footer: "Semester 1",
   }),
-  table.createDataColumn("age", {
-    id: "Age",
+  table.createDataColumn("semester_2", {
+    id: "semester_2",
+    header: "Semester 2",
+    footer: "Semester 2",
   }),
-  table.createGroup({
-    header: "Phone Number",
-    columns: [
-      table.createDataColumn((row) => row.phone[1], {
-        id: "Phone Number 1",
-      }),
-      table.createDataColumn((row) => row.phone[2], {
-        id: "Phone Number 2",
-      }),
-    ],
+  table.createDataColumn("semester_3", {
+    id: "semester_3",
+    header: "Semester 3",
+    footer: "Semester 3",
   }),
-  table.createDataColumn("email", {
-    id: "E-mail Address",
+  table.createDataColumn("semester_4", {
+    id: "semester_4",
+    header: "Semester 4",
+    footer: "Semester 4",
   }),
-  table.createGroup({
-    header: "Full Address",
-    columns: [
-      table.createDataColumn((row) => row.address.street, {
-        id: "Street",
-      }),
-      table.createDataColumn((row) => row.address.city, {
-        id: "City",
-      }),
-      table.createDataColumn((row) => row.address.state, {
-        id: "Address",
-      }),
-      table.createDataColumn((row) => row.address.pincode, {
-        id: "Pin Code",
-      }),
-    ],
-  }),
-  table.createGroup({
-    header: "Date Details",
-    columns: [
-      table.createDataColumn("date_of_birth", {
-        id: "Date of Birth",
-        cell: (props) => new Date(props.getValue()).toDateString(),
-      }),
-      table.createDataColumn("date_of_admission", {
-        id: "Date of Admission",
-        cell: (props) => new Date(props.getValue()).toDateString(),
-      }),
-    ],
+  table.createDataColumn("semester_5", {
+    id: "semester_5",
+    header: "Semester 5",
+    footer: "Semester 5",
   }),
 ];
+
 const BasicTable = () => {
-  const [data, setData] = useState([...defaultData]);
-  const [columns, setColumns] = useState([...defaultColumns]);
+  const [data] = useState([...defaultData]);
+  const [columns] = useState([...defaultColumns]);
 
   const instance = useTableInstance(table, {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-  console.log(instance.getRowModel());
   return (
     <div>
-      <table border={1}>
+      <table border="1">
         <thead>
           {instance.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
