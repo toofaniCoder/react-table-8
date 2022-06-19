@@ -12,31 +12,81 @@ const defaultData = [...STUDENTS];
 
 // DEFINE COLUMNS
 const defaultColumns = [
-  table.createDataColumn("subject", { id: "subjects", footer: "Subjects" }),
+  table.createDataColumn("subject", { id: "subjects", footer: "Total Marks:" }),
   table.createDataColumn("semester_1", {
     id: "semester_1",
     header: "Semester 1",
-    footer: "Semester 1",
+    footer: (props) => {
+      const initialValue = 0;
+      const sumWithInitial = props.instance
+        .getCoreRowModel()
+        .rows.reduce(
+          (previousValue, currentValue) =>
+            previousValue + currentValue.original[props.column.id],
+          initialValue
+        );
+      return sumWithInitial;
+    },
   }),
   table.createDataColumn("semester_2", {
     id: "semester_2",
     header: "Semester 2",
-    footer: "Semester 2",
+    footer: (props) => {
+      const initialValue = 0;
+      const sumWithInitial = props.instance
+        .getCoreRowModel()
+        .rows.reduce(
+          (previousValue, currentValue) =>
+            previousValue + currentValue.original[props.column.id],
+          initialValue
+        );
+      return sumWithInitial;
+    },
   }),
   table.createDataColumn("semester_3", {
     id: "semester_3",
     header: "Semester 3",
-    footer: "Semester 3",
+    footer: (props) => {
+      const initialValue = 0;
+      const sumWithInitial = props.instance
+        .getCoreRowModel()
+        .rows.reduce(
+          (previousValue, currentValue) =>
+            previousValue + currentValue.original[props.column.id],
+          initialValue
+        );
+      return sumWithInitial;
+    },
   }),
   table.createDataColumn("semester_4", {
     id: "semester_4",
     header: "Semester 4",
-    footer: "Semester 4",
+    footer: (props) => {
+      const initialValue = 0;
+      const sumWithInitial = props.instance
+        .getCoreRowModel()
+        .rows.reduce(
+          (previousValue, currentValue) =>
+            previousValue + currentValue.original[props.column.id],
+          initialValue
+        );
+      return sumWithInitial;
+    },
   }),
   table.createDataColumn("semester_5", {
     id: "semester_5",
     header: "Semester 5",
-    footer: "Semester 5",
+    footer: (props) => {
+      const initialValue = 0;
+      const sumWithInitial = props.instance
+        .getCoreRowModel()
+        .rows.reduce(
+          (previousValue, currentValue) =>
+            previousValue + currentValue.original[props.column.id],
+          initialValue
+        );
+      return sumWithInitial;
+    },
   }),
 ];
 
