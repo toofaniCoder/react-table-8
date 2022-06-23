@@ -4,10 +4,27 @@ body {
 table {
   text-align: center;
   border-collapse: collapse;
+  width: 100%;
+  border: 0;
+  /* enable this property only for laptop view */
+  /* font-size: 10px; */
 }
-
+thead,
+tfoot {
+  background: #ff270d;
+  color: white;
+}
+tbody {
+  background: hsl(0deg 0% 0%);
+  color: white;
+  border: 0;
+}
+tbody tr:nth-child(even) {
+  background: #111;
+}
 th,
 td {
+  border: none;
   padding: 10px 5px;
 }
 .pagination {
