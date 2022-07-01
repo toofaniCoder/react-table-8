@@ -3,6 +3,7 @@ import {
   createTable,
   useTableInstance,
   getCoreRowModel,
+  getSortedRowModel,
 } from "@tanstack/react-table";
 import STUDENTS from "../students.json";
 
@@ -74,11 +75,17 @@ const defaultColumns = [
 const BasicTable = () => {
   const [data, setData] = useState([...defaultData]);
   const [columns, setColumns] = useState([...defaultColumns]);
+  const [sorting, setSorting] = useState([]);
 
   const instance = useTableInstance(table, {
     data,
     columns,
+    state: {
+      sorting: sorting,
+    },
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
   console.log(instance.getRowModel());
   return (
@@ -89,7 +96,19 @@ const BasicTable = () => {
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th key={header.id} colSpan={header.colSpan}>
-                  {header.isPlaceholder ? null : header.renderHeader()}
+                  {header.isPlaceholder ? null : (
+                    <div onClick={header.column.getToggleSortingHandler()}>
+                      {header.renderHeader()}
+                      {header.column.getCanSort() ? (
+                        <>
+                          {{
+                            asc: <span>🔼 </span>,
+                            desc: <span>🔽</span>,
+                          }[header.column.getIsSorted()] ?? " ↕️"}
+                        </>
+                      ) : null}
+                    </div>
+                  )}
                 </th>
               ))}
             </tr>
