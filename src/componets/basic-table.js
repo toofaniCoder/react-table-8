@@ -3,6 +3,7 @@ import {
   createTable,
   useTableInstance,
   getCoreRowModel,
+  getExpandedRowModel,
 } from "@tanstack/react-table";
 import STUDENTS from "../students.json";
 
@@ -14,6 +15,41 @@ const defaultColumns = [
     columns: [
       table.createDataColumn("firstName", {
         id: "First Name",
+        header: (props) => (
+          <>
+            <button onClick={props.instance.getToggleAllRowsExpandedHandler()}>
+              {props.instance.getIsAllRowsExpanded() ? "👇" : "👉"}
+            </button>
+            First Name
+          </>
+        ),
+
+        cell: ({ row, getValue }) => (
+          <div
+            style={{
+              // Since rows are flattened by default,
+              // we can use the row.depth property
+              // and paddingLeft to visually indicate the depth
+              // of the row
+              // backgroundColor: COLORS[row.depth],
+              paddingLeft: `${row.depth * 2}rem`,
+            }}
+          >
+            {row.getCanExpand() ? (
+              <button
+                {...{
+                  onClick: row.getToggleExpandedHandler(),
+                  style: { cursor: "pointer" },
+                }}
+              >
+                {row.getIsExpanded() ? "👇" : "👉"}
+              </button>
+            ) : (
+              "🔵"
+            )}{" "}
+            {getValue()}
+          </div>
+        ),
       }),
       table.createDataColumn("middleName", {
         id: "Middle Name",
@@ -72,14 +108,21 @@ const defaultColumns = [
   }),
 ];
 const BasicTable = () => {
-  const [data] = useState([...defaultData]);
-  const [columns] = useState([...defaultColumns]);
-
+  const [data, setData] = useState([...defaultData]);
+  const [columns, setColumns] = useState([...defaultColumns]);
+  const [expanded, setExpanded] = useState({});
   const instance = useTableInstance(table, {
     data,
     columns,
+    state: {
+      expanded: expanded,
+    },
+    onExpandedChange: setExpanded,
+    getSubRows: (row) => row.subRows,
     getCoreRowModel: getCoreRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
   });
+  console.log(instance.getRowModel());
   return (
     <div>
       <table border={1}>
