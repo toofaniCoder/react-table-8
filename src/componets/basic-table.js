@@ -5,6 +5,7 @@ import {
   getCoreRowModel,
 } from "@tanstack/react-table";
 import STUDENTS from "../students.json";
+import _ from "lodash";
 
 const table = createTable();
 const defaultData = [...STUDENTS];
@@ -72,9 +73,10 @@ const defaultColumns = [
   }),
 ];
 const BasicTable = () => {
-  const [data] = useState([...defaultData.slice(0, 14)]);
-  const [columns] = useState([...defaultColumns]);
+  const [data, setData] = useState([...defaultData.slice(0, 14)]);
+  const [columns, setColumns] = useState([...defaultColumns]);
   const [columnVisibility, setColumnVisibility] = useState({});
+  const [columnOrder, setColumnOrder] = useState({});
 
   const instance = useTableInstance(table, {
     data,
@@ -82,8 +84,10 @@ const BasicTable = () => {
     getCoreRowModel: getCoreRowModel(),
     state: {
       columnVisibility: columnVisibility,
+      columnOrder: columnOrder,
     },
     onColumnVisibilityChange: setColumnVisibility,
+    onColumnOrderChange: setColumnOrder,
   });
   /*
   TEST cases
@@ -104,9 +108,20 @@ const BasicTable = () => {
   'Age', 'E-mail Address', 'Last Name', 'Pin Code']
 
   */
+  console.log(
+    _.shuffle(instance.getAllLeafColumns().map((column) => column.id))
+  );
+  const randomColumnOrder = () => {
+    instance.setColumnOrder(
+      _.shuffle(instance.getAllLeafColumns().map((column) => column.id))
+    );
+  };
 
   return (
     <div>
+      <button className="button" onClick={randomColumnOrder}>
+        change column order
+      </button>
       <div className="input-group">
         {" "}
         <label>
