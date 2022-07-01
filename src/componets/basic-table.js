@@ -72,17 +72,43 @@ const defaultColumns = [
   }),
 ];
 const BasicTable = () => {
-  const [data, setData] = useState([...defaultData]);
+  const [data, setData] = useState([...defaultData.slice(0, 15)]);
   const [columns, setColumns] = useState([...defaultColumns]);
+  const [columnVisibility, setColumnVisibility] = useState({});
 
   const instance = useTableInstance(table, {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    state: {
+      columnVisibility: columnVisibility,
+    },
+    onColumnVisibilityChange: setColumnVisibility,
   });
-  console.log(instance.getRowModel());
+
   return (
     <div>
+      <div className="input-group">
+        {" "}
+        <label>
+          <input
+            type="checkbox"
+            checked={instance.getIsAllColumnsVisible()}
+            onChange={instance.getToggleAllColumnsVisibilityHandler()}
+          />
+          Toggle All
+        </label>
+        {instance.getAllLeafColumns().map((column) => (
+          <label key={column.id}>
+            <input
+              type="checkbox"
+              checked={column.getIsVisible()}
+              onChange={column.getToggleVisibilityHandler()}
+            />
+            {column.id}
+          </label>
+        ))}
+      </div>
       <table border={1}>
         <thead>
           {instance.getHeaderGroups().map((headerGroup) => (
