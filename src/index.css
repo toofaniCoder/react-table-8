@@ -1,0 +1,65 @@
+body {
+  font-family: "Poppins";
+}
+table {
+  text-align: center;
+  border-collapse: collapse;
+  width: 100%;
+  border: none;
+}
+@media screen and (max-width: 1366px) {
+  table {
+    font-size: 10px;
+  }
+}
+.button {
+  background-color: #fffbc3;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  box-shadow: 10px 10px 0 0 #fee582, 10px 10px 0px 0 #fee582;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+th,
+td {
+  padding: 10px 5px;
+}
+.input-group {
+  background-color: #fffbc3;
+  padding: 10px;
+  margin: 30px 0;
+  border-radius: 5px;
+  width: 97%;
+  box-shadow: 0px 10px 0 0 #fee582, 10px 10px 0px 0 #fee582;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  row-gap: 10px;
+  /* color: hsl(189, 80%, 38%); */
+  font-weight: 600;
+}
+thead,
+tfoot {
+  border: 1px solid #000;
+}
+thead tr:nth-child(1),
+tfoot tr:nth-child(2) {
+  background-color: #ff2e63;
+  color: #fff;
+}
+thead tr:nth-child(2),
+tfoot tr:nth-child(1) {
+  background-color: hsl(345deg 100% 90%);
+}
+tbody {
+  background-color: #08d9d6;
+  border: none;
+}
+tbody tr:nth-child(even) {
+  background: hsl(179deg 93% 80%);
+}
+tbody td {
+  border: none;
+}
