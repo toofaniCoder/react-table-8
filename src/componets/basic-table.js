@@ -9,6 +9,24 @@ import STUDENTS from "../students.json";
 const table = createTable();
 const defaultData = [...STUDENTS];
 const defaultColumns = [
+  table.createDataColumn("select", {
+    id: "select",
+    header: ({ instance }) => {
+      return (
+        <IndeterminateCheckbox
+          checked={instance.getIsAllRowsSelected()}
+          indeterminate={instance.getIsSomeRowsSelected()}
+          onChange={instance.getToggleAllRowsSelectedHandler()}
+        />
+      );
+    },
+    cell: ({ row }) => (
+      <IndeterminateCheckbox
+        checked={row.getIsSelected()}
+        onChange={row.getToggleSelectedHandler()}
+      />
+    ),
+  }),
   table.createGroup({
     header: "Full Name",
     columns: [
@@ -80,7 +98,7 @@ const BasicTable = () => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-  console.log(instance.getRowModel());
+
   return (
     <div>
       <table border={1}>
@@ -119,5 +137,16 @@ const BasicTable = () => {
     </div>
   );
 };
+function IndeterminateCheckbox({ checked, indeterminate, onChange }) {
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = indeterminate;
+    }
+  }, [ref, indeterminate]);
 
+  return (
+    <input type="checkbox" ref={ref} checked={checked} onChange={onChange} />
+  );
+}
 export default BasicTable;
