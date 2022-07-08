@@ -13,11 +13,12 @@ table {
   }
 }
 .button {
-  background-color: #fffbc3;
+  background-color: #2198a6;
+  color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 3px;
-  box-shadow: 10px 10px 0 0 #fee582, 10px 10px 0px 0 #fee582;
+  box-shadow: 10px 10px 0 0 #2abfbf, 10px 10px 0px 0 #2abfbf;
   font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
@@ -46,20 +47,31 @@ tfoot {
 }
 thead tr:nth-child(1),
 tfoot tr:nth-child(2) {
-  background-color: #ffa921;
+  background-color: #2198a6;
   color: #fff;
 }
 thead tr:nth-child(2),
 tfoot tr:nth-child(1) {
-  background-color: #fffbc3;
+  background-color: #2abfbf;
 }
 tbody {
-  background-color: #fee582;
+  background-color: #f2b705;
   border: none;
 }
 tbody tr:nth-child(even) {
-  background: #fffbc3;
+ 
+  background: #F29F05;
 }
 tbody td {
   border: none;
+}
+.button-emoji {
+  background-color: transparent;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.button-emoji:hover {
+  opacity: 1;
 }

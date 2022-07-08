@@ -77,6 +77,7 @@ const BasicTable = () => {
   const [columns, setColumns] = useState([...defaultColumns]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [columnOrder, setColumnOrder] = useState({});
+  const [columnPinning, setColumnPinning] = useState({});
 
   const instance = useTableInstance(table, {
     data,
@@ -85,9 +86,11 @@ const BasicTable = () => {
     state: {
       columnVisibility: columnVisibility,
       columnOrder: columnOrder,
+      columnPinning: columnPinning,
     },
     onColumnVisibilityChange: setColumnVisibility,
     onColumnOrderChange: setColumnOrder,
+    onColumnPinningChange: setColumnPinning,
   });
   /*
   TEST cases
@@ -150,7 +153,37 @@ const BasicTable = () => {
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th key={header.id} colSpan={header.colSpan}>
-                  {header.isPlaceholder ? null : header.renderHeader()}
+                  <div>
+                    {header.isPlaceholder ? null : header.renderHeader()}
+                    {!header.isPlaceholder && header.column.getCanPin() && (
+                      <div>
+                        {header.column.getIsPinned() !== "left" ? (
+                          <button
+                            className="button-emoji"
+                            onClick={() => header.column.pin("left")}
+                          >
+                            {"👈"}
+                          </button>
+                        ) : null}
+                        {header.column.getIsPinned() ? (
+                          <button
+                            className="button-emoji"
+                            onClick={() => header.column.pin(false)}
+                          >
+                            {"❌"}
+                          </button>
+                        ) : null}
+                        {header.column.getIsPinned() !== "right" ? (
+                          <button
+                            className="button-emoji"
+                            onClick={() => header.column.pin("right")}
+                          >
+                            {"👉"}
+                          </button>
+                        ) : null}
+                      </div>
+                    )}
+                  </div>
                 </th>
               ))}
             </tr>
