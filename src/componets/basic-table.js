@@ -78,6 +78,7 @@ const BasicTable = () => {
   const [columnVisibility, setColumnVisibility] = useState({});
   const [columnOrder, setColumnOrder] = useState({});
   const [columnPinning, setColumnPinning] = useState({});
+  const [isSplit, setIsSplit] = React.useState(false);
 
   const instance = useTableInstance(table, {
     data,
@@ -146,70 +147,222 @@ const BasicTable = () => {
           </label>
         ))}
       </div>
-
-      <table border={1}>
-        <thead>
-          {instance.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} colSpan={header.colSpan}>
-                  <div>
-                    {header.isPlaceholder ? null : header.renderHeader()}
-                    {!header.isPlaceholder && header.column.getCanPin() && (
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            checked={isSplit}
+            onChange={(e) => setIsSplit(e.target.checked)}
+          />{" "}
+          Split Mode
+        </label>
+      </div>
+      <div className={isSplit ? "flex-table" : null}>
+        {isSplit ? (
+          <table border={1}>
+            <thead>
+              {instance.getLeftHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th key={header.id} colSpan={header.colSpan}>
                       <div>
-                        {header.column.getIsPinned() !== "left" ? (
-                          <button
-                            className="button-emoji"
-                            onClick={() => header.column.pin("left")}
-                          >
-                            {"👈"}
-                          </button>
-                        ) : null}
-                        {header.column.getIsPinned() ? (
-                          <button
-                            className="button-emoji"
-                            onClick={() => header.column.pin(false)}
-                          >
-                            {"❌"}
-                          </button>
-                        ) : null}
-                        {header.column.getIsPinned() !== "right" ? (
-                          <button
-                            className="button-emoji"
-                            onClick={() => header.column.pin("right")}
-                          >
-                            {"👉"}
-                          </button>
-                        ) : null}
+                        {header.isPlaceholder ? null : header.renderHeader()}
+                        {!header.isPlaceholder && header.column.getCanPin() && (
+                          <div>
+                            {header.column.getIsPinned() !== "left" ? (
+                              <button
+                                className="button-emoji"
+                                onClick={() => header.column.pin("left")}
+                              >
+                                {"👈"}
+                              </button>
+                            ) : null}
+                            {header.column.getIsPinned() ? (
+                              <button
+                                className="button-emoji"
+                                onClick={() => header.column.pin(false)}
+                              >
+                                {"❌"}
+                              </button>
+                            ) : null}
+                            {header.column.getIsPinned() !== "right" ? (
+                              <button
+                                className="button-emoji"
+                                onClick={() => header.column.pin("right")}
+                              >
+                                {"👉"}
+                              </button>
+                            ) : null}
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                </th>
+                    </th>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {instance.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>{cell.renderCell()}</td>
+            </thead>
+            <tbody>
+              {instance.getRowModel().rows.map((row) => (
+                <tr key={row.id}>
+                  {row.getLeftVisibleCells().map((cell) => (
+                    <td key={cell.id}>{cell.renderCell()}</td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          {instance.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id} colSpan={header.colSpan}>
-                  {header.isPlaceholder ? null : header.renderFooter()}
-                </th>
+            </tbody>
+            <tfoot>
+              {instance.getLeftFooterGroups().map((footerGroup) => (
+                <tr key={footerGroup.id}>
+                  {footerGroup.headers.map((header) => (
+                    <th key={header.id} colSpan={header.colSpan}>
+                      {header.isPlaceholder ? null : header.renderFooter()}
+                    </th>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tfoot>
-      </table>
+            </tfoot>
+          </table>
+        ) : null}
+
+        <table border={1}>
+          <thead>
+            {(isSplit
+              ? instance.getCenterHeaderGroups()
+              : instance.getHeaderGroups()
+            ).map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th key={header.id} colSpan={header.colSpan}>
+                    <div>
+                      {header.isPlaceholder ? null : header.renderHeader()}
+                      {!header.isPlaceholder && header.column.getCanPin() && (
+                        <div>
+                          {header.column.getIsPinned() !== "left" ? (
+                            <button
+                              className="button-emoji"
+                              onClick={() => header.column.pin("left")}
+                            >
+                              {"👈"}
+                            </button>
+                          ) : null}
+                          {header.column.getIsPinned() ? (
+                            <button
+                              className="button-emoji"
+                              onClick={() => header.column.pin(false)}
+                            >
+                              {"❌"}
+                            </button>
+                          ) : null}
+                          {header.column.getIsPinned() !== "right" ? (
+                            <button
+                              className="button-emoji"
+                              onClick={() => header.column.pin("right")}
+                            >
+                              {"👉"}
+                            </button>
+                          ) : null}
+                        </div>
+                      )}
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {instance.getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {(isSplit
+                  ? row.getCenterVisibleCells()
+                  : row.getVisibleCells()
+                ).map((cell) => (
+                  <td key={cell.id}>{cell.renderCell()}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            {(isSplit
+              ? instance.getCenterFooterGroups()
+              : instance.getFooterGroups()
+            ).map((footerGroup) => (
+              <tr key={footerGroup.id}>
+                {footerGroup.headers.map((header) => (
+                  <th key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder ? null : header.renderFooter()}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </tfoot>
+        </table>
+
+        {isSplit ? (
+          <table border={1}>
+            <thead>
+              {instance.getRightHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th key={header.id} colSpan={header.colSpan}>
+                      <div>
+                        {header.isPlaceholder ? null : header.renderHeader()}
+                        {!header.isPlaceholder && header.column.getCanPin() && (
+                          <div>
+                            {header.column.getIsPinned() !== "left" ? (
+                              <button
+                                className="button-emoji"
+                                onClick={() => header.column.pin("left")}
+                              >
+                                {"👈"}
+                              </button>
+                            ) : null}
+                            {header.column.getIsPinned() ? (
+                              <button
+                                className="button-emoji"
+                                onClick={() => header.column.pin(false)}
+                              >
+                                {"❌"}
+                              </button>
+                            ) : null}
+                            {header.column.getIsPinned() !== "right" ? (
+                              <button
+                                className="button-emoji"
+                                onClick={() => header.column.pin("right")}
+                              >
+                                {"👉"}
+                              </button>
+                            ) : null}
+                          </div>
+                        )}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody>
+              {instance.getRowModel().rows.map((row) => (
+                <tr key={row.id}>
+                  {row.getRightVisibleCells().map((cell) => (
+                    <td key={cell.id}>{cell.renderCell()}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              {instance.getRightFooterGroups().map((footerGroup) => (
+                <tr key={footerGroup.id}>
+                  {footerGroup.headers.map((header) => (
+                    <th key={header.id} colSpan={header.colSpan}>
+                      {header.isPlaceholder ? null : header.renderFooter()}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </tfoot>
+          </table>
+        ) : null}
+      </div>
     </div>
   );
 };

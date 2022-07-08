@@ -4,7 +4,7 @@ body {
 table {
   text-align: center;
   border-collapse: collapse;
-  width: 100%;
+  /* width: 100%; */
   border: none;
 }
 @media screen and (max-width: 1366px) {
@@ -74,4 +74,11 @@ tbody td {
 }
 .button-emoji:hover {
   opacity: 1;
+}
+.flex-table {
+  display: flex;
+  column-gap: 20px;
+}
+.flex-table table:nth-child(2) {
+  flex:1
 }
