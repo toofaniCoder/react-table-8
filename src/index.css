@@ -1,3 +1,8 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
 body {
   font-family: 'Poppins';
 }
@@ -22,8 +27,7 @@ table {
   cursor: pointer;
 }
 
-th,
-td {
+th {
   padding: 10px 5px;
 }
 
@@ -42,4 +46,26 @@ tfoot tr:nth-child(1) {
 }
 tbody {
   background-color: #ffffff;
+  text-align: left;
+}
+
+td input {
+  width: 100%;
+  border: none;
+  padding: 15px 5px;
+}
+td input:hover {
+  background-color: hsl(240, 100%, 90%);
+  cursor: pointer;
+}
+
+td input:focus {
+  border: none;
+  outline: none;
+  background-color: navy;
+  color: #fff;
+}
+
+input:focus td {
+  border: none;
 }
