@@ -1,0 +1,26 @@
+body {
+  font-family: 'Poppins';
+}
+table {
+  text-align: center;
+  border-collapse: collapse;
+  border-color: #000;
+}
+
+th,
+td {
+  padding: 10px 5px;
+}
+thead,
+tfoot {
+  background-color: #222;
+}
+
+thead th,
+tfoot th {
+  color: #f5f5f5;
+}
+
+tbody {
+  background-color: hsl(309, 88%, 50%);
+}
