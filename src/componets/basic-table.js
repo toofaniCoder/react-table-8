@@ -78,10 +78,10 @@ const BasicTable = () => {
   const instance = useTableInstance(table, {
     data,
     columns,
-    columnResizeMode: 'onChange',
+    columnResizeMode: 'onEnd',
     getCoreRowModel: getCoreRowModel(),
   });
-  console.log(instance.getRowModel());
+  console.log(instance.getState().columnResizeMode);
   return (
     <div>
       <table border={1} style={{ width: instance.getTotalSize() }}>
@@ -101,6 +101,13 @@ const BasicTable = () => {
                     className={`resizer ${
                       header.column.getIsResizing() ? 'isResizing' : null
                     }`}
+                    style={{
+                      transform: header.column.getIsResizing()
+                        ? `translateX(${
+                            instance.getState().columnSizingInfo.deltaOffset
+                          }px)`
+                        : '',
+                    }}
                   ></div>
                 </th>
               ))}
