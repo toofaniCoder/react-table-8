@@ -10,6 +10,7 @@ table {
 th,
 td {
   padding: 10px 5px;
+  position: relative;
 }
 thead,
 tfoot {
@@ -23,4 +24,21 @@ tfoot th {
 
 tbody {
   background-color: hsl(309, 88%, 50%);
+}
+
+.resizer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  cursor: col-resize;
+  user-select: none;
+  touch-action: none;
+}
+
+.resizer.isResizing {
+  background-color: hsl(309, 88%, 50%);
+  opacity: 1;
 }

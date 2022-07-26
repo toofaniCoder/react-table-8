@@ -78,18 +78,30 @@ const BasicTable = () => {
   const instance = useTableInstance(table, {
     data,
     columns,
+    columnResizeMode: 'onChange',
     getCoreRowModel: getCoreRowModel(),
   });
   console.log(instance.getRowModel());
   return (
     <div>
-      <table border={1}>
+      <table border={1} style={{ width: instance.getTotalSize() }}>
         <thead>
           {instance.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} colSpan={header.colSpan}>
+                <th
+                  key={header.id}
+                  colSpan={header.colSpan}
+                  style={{ width: header.getSize() }}
+                >
                   {header.isPlaceholder ? null : header.renderHeader()}
+                  <div
+                    onMouseDown={header.getResizeHandler()}
+                    onTouchStart={header.getResizeHandler()}
+                    className={`resizer ${
+                      header.column.getIsResizing() ? 'isResizing' : null
+                    }`}
+                  ></div>
                 </th>
               ))}
             </tr>
@@ -98,9 +110,18 @@ const BasicTable = () => {
         <tbody>
           {instance.getRowModel().rows.map((row) => (
             <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>{cell.renderCell()}</td>
-              ))}
+              {row.getVisibleCells().map((cell) => {
+                return (
+                  <td
+                    key={cell.id}
+                    style={{
+                      width: cell.column.getSize(),
+                    }}
+                  >
+                    {cell.renderCell()}
+                  </td>
+                );
+              })}
             </tr>
           ))}
         </tbody>
