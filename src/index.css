@@ -1,0 +1,12 @@
+body {
+  font-family: "Poppins";
+}
+table {
+  text-align: center;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px 5px;
+}
