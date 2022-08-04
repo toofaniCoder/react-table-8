@@ -3,6 +3,8 @@ import {
   createTable,
   useTableInstance,
   getCoreRowModel,
+  getGroupedRowModel,
+  getExpandedRowModel,
 } from '@tanstack/react-table';
 import STUDENTS from '../students.json';
 
@@ -17,14 +19,19 @@ const defaultColumns = [
       }),
       table.createDataColumn('middleName', {
         id: 'Middle Name',
+        aggregatedCell: ({ getValue }) => `(${getValue()})`,
+        aggregationFn: 'count',
       }),
       table.createDataColumn('lastName', {
         id: 'Last Name',
+        aggregatedCell: ({ getValue }) => `(${getValue()})`,
+        aggregationFn: 'count',
       }),
     ],
   }),
   table.createDataColumn('age', {
     id: 'Age',
+    aggregationFn: 'extent',
   }),
   table.createGroup({
     header: 'Phone Number',
@@ -74,11 +81,18 @@ const defaultColumns = [
 const BasicTable = () => {
   const [data, setData] = useState([...defaultData]);
   const [columns, setColumns] = useState([...defaultColumns]);
+  const [grouping, setGrouping] = useState([]);
 
   const instance = useTableInstance(table, {
     data,
     columns,
+    state: {
+      grouping,
+    },
+    onGroupingChange: setGrouping,
+    getGroupedRowModel: getGroupedRowModel(),
     getCoreRowModel: getCoreRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
   });
   console.log(instance.getRowModel());
   return (
@@ -89,7 +103,20 @@ const BasicTable = () => {
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th key={header.id} colSpan={header.colSpan}>
-                  {header.isPlaceholder ? null : header.renderHeader()}
+                  {header.isPlaceholder ? null : (
+                    <div>
+                      {header.column.getCanGroup() ? (
+                        <button
+                          onClick={header.column.getToggleGroupingHandler()}
+                        >
+                          {header.column.getIsGrouped()
+                            ? `❌(${header.column.getGroupedIndex()})`
+                            : '👉'}
+                        </button>
+                      ) : null}
+                      {header.renderHeader()}
+                    </div>
+                  )}
                 </th>
               ))}
             </tr>
@@ -99,7 +126,39 @@ const BasicTable = () => {
           {instance.getRowModel().rows.map((row) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>{cell.renderCell()}</td>
+                // <td key={cell.id}>{cell.renderCell()}</td>
+                <td
+                  style={{
+                    background: cell.getIsGrouped()
+                      ? 'red'
+                      : cell.getIsAggregated()
+                      ? 'green'
+                      : cell.getIsPlaceholder()
+                      ? 'yellow'
+                      : 'blue',
+                  }}
+                  key={cell.id}
+                >
+                  {cell.getIsGrouped() ? (
+                    <>
+                      <button
+                        onClick={row.getToggleExpandedHandler()}
+                        style={{
+                          cursor: row.getCanExpand()
+                            ? 'pointer'
+                            : 'not-allowed',
+                        }}
+                      >
+                        {row.getIsExpanded() ? '❌' : '👉'}
+                        {cell.renderCell()} ({row.subRows.length})
+                      </button>
+                    </>
+                  ) : cell.getIsAggregated() ? (
+                    cell.renderAggregatedCell()
+                  ) : cell.getIsPlaceholder() ? null : (
+                    cell.renderCell()
+                  )}
+                </td>
               ))}
             </tr>
           ))}
