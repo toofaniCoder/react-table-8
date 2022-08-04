@@ -64,19 +64,19 @@ const defaultColumns = [
       }),
     ],
   }),
-  table.createGroup({
-    header: 'Date Details',
-    columns: [
-      table.createDataColumn('date_of_birth', {
-        id: 'Date of Birth',
-        cell: (props) => new Date(props.getValue()).toDateString(),
-      }),
-      table.createDataColumn('date_of_admission', {
-        id: 'Date of Admission',
-        cell: (props) => new Date(props.getValue()).toDateString(),
-      }),
-    ],
-  }),
+  // table.createGroup({
+  //   header: 'Date Details',
+  //   columns: [
+  //     table.createDataColumn('date_of_birth', {
+  //       id: 'Date of Birth',
+  //       cell: (props) => new Date(props.getValue()).toDateString(),
+  //     }),
+  //     table.createDataColumn('date_of_admission', {
+  //       id: 'Date of Admission',
+  //       cell: (props) => new Date(props.getValue()).toDateString(),
+  //     }),
+  //   ],
+  // }),
 ];
 const BasicTable = () => {
   const [data, setData] = useState([...defaultData]);
@@ -121,9 +121,14 @@ const BasicTable = () => {
                         <button
                           onClick={header.column.getToggleGroupingHandler()}
                         >
-                          {header.column.getIsGrouped()
-                            ? `❌(${header.column.getGroupedIndex()})`
-                            : '👉'}
+                          {header.column.getIsGrouped() ? (
+                            <>
+                              <span className="emoji">❌</span>
+                              {header.column.getGroupedIndex()}
+                            </>
+                          ) : (
+                            <span className="emoji">👉</span>
+                          )}
                         </button>
                       ) : null}
                       {header.renderHeader()}
@@ -141,13 +146,15 @@ const BasicTable = () => {
                 // <td key={cell.id}>{cell.renderCell()}</td>
                 <td
                   style={{
+                    textAlign: cell.getIsGrouped() ? 'left' : 'center',
+
                     background: cell.getIsGrouped()
-                      ? 'red'
+                      ? '#05697C'
                       : cell.getIsAggregated()
-                      ? 'green'
+                      ? '#68A7AC'
                       : cell.getIsPlaceholder()
-                      ? 'yellow'
-                      : 'blue',
+                      ? '#C6A88D'
+                      : '#FAC585',
                   }}
                   key={cell.id}
                 >
@@ -159,9 +166,14 @@ const BasicTable = () => {
                           cursor: row.getCanExpand()
                             ? 'pointer'
                             : 'not-allowed',
+                          color: 'white',
                         }}
                       >
-                        {row.getIsExpanded() ? '❌' : '👉'}
+                        {row.getIsExpanded() ? (
+                          <span className="emoji">❌</span>
+                        ) : (
+                          <span className="emoji">👉</span>
+                        )}
                         {cell.renderCell()} ({row.subRows.length})
                       </button>
                     </>
