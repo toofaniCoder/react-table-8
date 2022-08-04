@@ -30,8 +30,8 @@ const defaultColumns = [
     ],
   }),
   table.createDataColumn('age', {
-    id: 'Age',
-    aggregationFn: 'extent',
+    id: 'age',
+    aggregationFn: 'minmax',
   }),
   table.createGroup({
     header: 'Phone Number',
@@ -93,6 +93,18 @@ const BasicTable = () => {
     getGroupedRowModel: getGroupedRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
+    aggregationFns: {
+      minmax: (columnId, leafRows, childRows) => {
+        if (childRows.length > 1)
+          return (
+            Math.min(...childRows.map((item) => item.original[columnId])) +
+            ' - ' +
+            Math.max(...childRows.map((item) => item.original[columnId]))
+          );
+        return leafRows[0].original[columnId];
+        // return the aggregated value
+      },
+    },
   });
   console.log(instance.getRowModel());
   return (
